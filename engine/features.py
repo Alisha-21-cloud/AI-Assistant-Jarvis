@@ -17,6 +17,7 @@ import pvporcupine
 
 
 from engine.helper import extract_yt_term, remove_words
+from hugchat import hugchat
 
 con = sqlite3.connect("jarvis.db")
 cursor = con.cursor()
@@ -167,3 +168,27 @@ def whatsApp(mobile_no, message, flag, name):
 
     pyautogui.hotkey('enter')
     speak(jarvis_message)
+    
+
+# chat bot 
+def chatBot(query):
+    user_input = query.lower()
+    chatbot = hugchat.ChatBot(cookie_path="engine/cookies.json")
+
+    # Start a new conversation
+    conversation_id = chatbot.new_conversation()
+    chatbot.change_conversation(conversation_id)
+
+    # Combine system prompt + user query into a single message
+    full_prompt = (
+        "You are Jarvis, an intelligent, confident, and helpful voice assistant created by Ahmad. "
+        "You speak in short, clear, and witty replies. Never mention Llama or Meta AI. "
+        "Avoid long introductions and stay in character as Jarvis.\n\n"
+        f"User: {user_input}\nJarvis:"
+    )
+
+    # Ask the model
+    response = chatbot.chat(full_prompt)
+    print(response)
+    speak(response)
+    return response
