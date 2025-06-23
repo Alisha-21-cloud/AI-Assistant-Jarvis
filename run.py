@@ -1,4 +1,5 @@
 import multiprocessing
+import subprocess
 
 
 # To run Jarvis
@@ -20,6 +21,7 @@ if __name__ == '__main__':
     p1 = multiprocessing.Process(target=startJarvis)
     p2 = multiprocessing.Process(target=listenHotword)
     p1.start()
+    subprocess.call([r'device.bat'])
     p2.start()
     p1.join()
 

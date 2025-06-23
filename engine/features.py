@@ -192,3 +192,49 @@ def chatBot(query):
     print(response)
     speak(response)
     return response
+
+#android automation
+def makeCall(name, mobileNo):
+    mobileNo =mobileNo.replace(" ", "")
+    speak("Calling "+name)
+    command = 'adb shell am start -a android.intent.action.CALL -d tel:'+mobileNo
+    os.system(command)
+    
+# to send message
+def sendMessage(message, mobileNo, name):
+    from engine.helper import replace_spaces_with_percent_s, goback, keyEvent, tapEvents, adbInput
+    message = replace_spaces_with_percent_s(message)
+    mobileNo = replace_spaces_with_percent_s(mobileNo)
+    speak("sending message")
+    goback(4)
+    time.sleep(1)
+    keyEvent(3)
+    time.sleep(1)
+    
+    # open sms app
+    tapEvents(342, 2175)
+    time.sleep(2)
+    
+    #start chat
+    tapEvents(912, 2113)
+    time.sleep(2)
+    
+    #tap on to filed
+    tapEvents(225, 338)
+    time.sleep(2)
+    
+    # search mobile no
+    adbInput(mobileNo)
+    time.sleep(2)
+    
+    # tap on input
+    tapEvents(282, 1500)
+    time.sleep(1)
+    
+    #message
+    adbInput(message)
+    time.sleep(1)
+    
+    #send
+    tapEvents(987, 1482)
+    speak("message send successfully to "+name)
